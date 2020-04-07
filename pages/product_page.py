@@ -36,7 +36,7 @@ class ProductPage(BasePage):
     def should_be_product_name_in_message_about_basket(self):
         assert self.browser.find_element(
             *ProductPageLocators.PRODUCT_NAME
-        ).text in self.browser.find_element(
+        ).text == self.browser.find_element(
             *ProductPageLocators.BASKET_PRODUCT_NAME
         ).text, "incorrect name of product im message about product added"
 
