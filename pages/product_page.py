@@ -51,3 +51,13 @@ class ProductPage(BasePage):
         ).text in self.browser.find_element(
             *ProductPageLocators.BASKET_PRICE
         ).text, "Product price not equal product price in basket"
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(
+            *ProductPageLocators.BASKET_SUCCESS
+        ), "Success message is presented, but should not be"
+
+    def should_success_message_disappear(self):
+        assert self.is_disappeared(
+            *ProductPageLocators.BASKET_SUCCESS
+        ), "Success message is not disappeared"
