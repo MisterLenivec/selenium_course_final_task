@@ -24,7 +24,7 @@ def firefox_oprions(user_language):
     return fp
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def browser(request):
     browser_name = request.config.getoption("browser_name")
     browser = None
