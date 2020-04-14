@@ -1,5 +1,9 @@
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 from .base_page import BasePage
 from .locators import ProductPageLocators
+import time
 
 
 class ProductPage(BasePage):
@@ -33,12 +37,24 @@ class ProductPage(BasePage):
             *ProductPageLocators.BASKET_SUCCESS
         ), "Message about product added to basket is not presented"
 
+    def get_product_name(self, name):
+        WebDriverWait(self.browser, 10).until(
+            expected_conditions.presence_of_element_located(name))
+        try:
+            return str(self.browser.find_element(*name).text)
+        except NoSuchElementException:
+            return None
+
     def should_be_product_name_in_message_about_basket(self):
-        assert self.browser.find_element(
-            *ProductPageLocators.PRODUCT_NAME
-        ).text == self.browser.find_element(
-            *ProductPageLocators.BASKET_PRODUCT_NAME
-        ).text, "incorrect name of product im message about product added"
+        time.sleep(1)  # It's for Firefox, if you remove it, tests will fail
+        product_name = self.get_product_name(
+            ProductPageLocators.PRODUCT_NAME
+        )
+        basket_product_name = self.get_product_name(
+            ProductPageLocators.BASKET_PRODUCT_NAME
+        )
+        assert product_name == basket_product_name, \
+            "incorrect name of product in message about product added"
 
     def should_be_message_about_product_price(self):
         assert self.is_element_present(

@@ -15,10 +15,12 @@ def chrome_options(user_language):
     options.add_experimental_option(
         'prefs', {'intl.accept_languages': user_language}
     )
+    # options.add_argument("--headless")  # No open browser
+    options.add_argument("--window-size=1920x1080")
     return options
 
 
-def firefox_oprions(user_language):
+def firefox_options(user_language):
     fp = webdriver.FirefoxProfile()
     fp.set_preference("intl.accept_languages", user_language)
     return fp
@@ -38,7 +40,7 @@ def browser(request):
     elif browser_name == "firefox":
         print("\nstart firefox browser for test..")
         browser = webdriver.Firefox(
-            firefox_profile=firefox_oprions(user_language)
+            firefox_profile=firefox_options(user_language)
         )
     else:
         raise pytest.UsageError("--browser_name should be chrome or firefox")
